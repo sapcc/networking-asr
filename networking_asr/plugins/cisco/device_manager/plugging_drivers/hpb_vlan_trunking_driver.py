@@ -21,15 +21,16 @@ from neutron.extensions import providernet as pr_net
 from neutron.i18n import _LE
 from neutron import manager
 
-from networking_cisco.plugins.cisco,common import cisco_constants
+from networking_cisco.plugins.cisco.common import cisco_constants
 from networking_cisco.plugins.cisco.device_manager import config
-import networking_cisco.plugins.cisco.device_manager.plugging_drivers as plug
+
+import networking_cisco.plugins.cisco.device_manager.plugging_drivers.hw_vlan_trunking_driver as base
 
 
 LOG = logging.getLogger(__name__)
 
 
-class HBPVLANTrunkingPlugDriver(plug.hw_vlan_trunking_driver.HwVLANTrunkingPlugDriver):
+class HPBVLANTrunkingPlugDriver(base.HwVLANTrunkingPlugDriver):
 
     def allocate_hosting_port(self, context, router_id, port_db, network_type,
                               hosting_device_id):
@@ -43,6 +44,9 @@ class HBPVLANTrunkingPlugDriver(plug.hw_vlan_trunking_driver.HwVLANTrunkingPlugD
         # as a hosting_device with the name that the ML2 ACI mech driver uses
         # for that device.
         asr_host_name = asr_hd['name']
+
+        LOG.info("**************************** Allocating host {}".format(asr_host_name))
+
         self._core_plugin.update_port(context, port_db.id, {'port': {'binding:host_id': asr_host_name}})
 
         port_context = self._core_plugin.get_bound_port_context(context,port_db['id'])
