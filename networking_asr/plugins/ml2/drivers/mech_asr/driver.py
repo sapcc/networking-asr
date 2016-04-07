@@ -45,15 +45,15 @@ class CiscoASRMechanismDriver(api.MechanismDriver):
         network_id = context.network.current['id']
 
         # For now we will just bind the last segment
-        segment = context.segments_to_bind.pop()
+        if context.segments_to_bind:
+            segment = context.segments_to_bind.pop()
 
-        device_owner = context.current['device_owner']
+            device_owner = context.current['device_owner']
 
-        # For now use the simple check that its a network object,
-        # needs refinement because this will include DHCP agents
-        # Workaround now by putting asr driver at end of list in config
-        if device_owner and device_owner.startswith('network'):
-            context.set_binding(segment[api.ID], self.vif_type,self.vif_details)
-
-        return True
+            # For now use the simple check that its a network object,
+            # needs refinement because this will include DHCP agents
+            # Workaround now by putting asr driver at end of list in config
+            if device_owner and device_owner.startswith('network'):
+                context.set_binding(segment[api.ID], self.vif_type,self.vif_details)
+                return True
 
