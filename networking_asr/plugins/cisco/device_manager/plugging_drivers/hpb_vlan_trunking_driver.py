@@ -12,17 +12,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import time
 from oslo_log import log as logging
-from oslo_utils import excutils
-
-from neutron.common import constants as l3_constants
-from neutron.extensions import providernet as pr_net
-from neutron.i18n import _LE
 from neutron import manager
-
 from networking_cisco.plugins.cisco.common import cisco_constants
-from networking_cisco.plugins.cisco.device_manager import config
 
 import networking_cisco.plugins.cisco.device_manager.plugging_drivers.hw_vlan_trunking_driver as base
 
